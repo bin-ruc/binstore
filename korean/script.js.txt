@@ -1,0 +1,58 @@
+// script.js
+
+const input = document.getElementById("userInput");
+const button = document.getElementById("sendButton");
+const chatBox = document.getElementById("chatBox");
+
+// Bot character personality
+const botName = "선생님 Seungmin";
+const greetings = [
+  "안녕하세요! 😊 무엇을 배우고 싶으신가요?",
+  "반가워요! 오늘도 열심히 한국어 공부해볼까요?",
+  "어서오세요! 같이 재미있게 배워봐요!"
+];
+
+// Respond to messages
+function generateBotResponse(userMsg) {
+  userMsg = userMsg.toLowerCase();
+
+  if (userMsg.includes("hello") || userMsg.includes("안녕")) {
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  } else if (userMsg.includes("i like") || userMsg.includes("i love")) {
+    return "좋아해요(joahaeyo) 또는 사랑해요(saranghaeyo)를 사용해 보세요!";
+  } else if (userMsg.includes("food") || userMsg.includes("eat")) {
+    return "음식은 'eumsik'이에요. 예: 저는 한국 음식을 좋아해요.";
+  } else if (userMsg.includes("how to say")) {
+    return "무엇을 어떻게 말하는지 알고 싶으신가요? 예: 'how to say hello in Korean'";
+  } else {
+    return "좋은 질문이에요! 하지만 아직 그 부분은 배우고 있는 중이에요 😊";
+  }
+}
+
+// Display messages
+function addMessage(message, sender) {
+  const msg = document.createElement("div");
+  msg.className = "message " + sender;
+  msg.textContent = message;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Handle send
+button.addEventListener("click", () => {
+  const userText = input.value.trim();
+  if (userText === "") return;
+
+  addMessage(userText, "user");
+  const botReply = generateBotResponse(userText);
+  setTimeout(() => addMessage(botReply, "bot"), 500);
+
+  input.value = "";
+});
+
+// Handle Enter key
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    button.click();
+  }
+});
